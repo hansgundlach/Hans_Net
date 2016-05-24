@@ -1,0 +1,20 @@
+INDEX VERSION 1.127+C:\Users\hansg17\Documents\GitHub\Java_Neural_Net\.metadata\.plugins\org.eclipse.jdt.core
+171951929.index
+3112800850.index
+3849173685.index
+983289036.index
+1824087116.index
+2829487956.index
+512326953.index
+1458786027.index
+4037711219.index
+2440631446.index
+2742994705.index
+1948665121.index
+4082236716.index
+2313667782.index
+1144560889.index
+1095434375.index
+3420843669.index
+1923567442.index
+692601166.index
