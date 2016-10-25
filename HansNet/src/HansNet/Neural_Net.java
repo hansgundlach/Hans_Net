@@ -11,9 +11,6 @@ import java.io.*;
 public class Neural_Net {
 	public static final double e = 2.71828;
 	private double[][] yHat;
-	//public static double[] firstCol;
-	//public static double[] secondCol;
-	//public static double[] thirdCol;
 	private double[][] input;
 	private double[][] output;
 	private double[][]  dJdW1;
@@ -31,23 +28,18 @@ public class Neural_Net {
 	
 	
 	public static void main(String args[]) throws FileNotFoundException{
-		//I should be able to make multiple neural nets
-		//if you see anything bad just leave a comment on a method I should implement 
-		//or a variable I should change
+   // example input and output data
 		double inputData[][] = new double[][]{{.1,.1},{.2,.2},{10,10},{20,20}};
 		 double outputData[][] = new double[][]{{10},{10},{99},{105}};
-		 //this is an absolute location 
+		 //change this to your file location
 		 File neuralFile = new File("C://Users//hansg17//Documents//GitHub//Java_Neural_Net//HansNet//src//HansNet//neural.txt");
 		//readInput()
 			Neural_Net  firstnet =  new Neural_Net(); 
 			firstnet.train(neuralFile,2,1);
-			//firstnet.train(inputData, outputData);
-			//this can be with any data
-			//firstnet.prediction(inputData);
+						firstnet.prediction(inputData);
 	}
 	
-	//this structure might change when I refactor
-public Neural_Net(){
+	public Neural_Net(){
 		}
 //second constructor for files
 public void train(double[][] X ,double[][] y){
@@ -82,22 +74,7 @@ public void train(File f, int dim1,int dim2) throws FileNotFoundException{
 	int colums = dim1+dim2;
 	
 	
-	/*ArrayList<ArrayList<Double>> table = new ArrayList<ArrayList<Double>>();
-	int i = 0;
-	while(sc.hasNextLine()){
-		i = i+1;
-		 String stuff = sc.nextLine();
-		 Scanner  fig = new Scanner(stuff);
-		 System.out.println(i);
-		
-		 while(fig.hasNextDouble()){
-			 table.get(i).add(fig.nextDouble());
-			 
-		 }
-		 
-		
-	}*/
-	//get all the values in 
+		//get all the values into net 
 Scanner ss = new Scanner(new FileReader(f));
 	double[][] firstinput = new double[rows][colums];
 	
