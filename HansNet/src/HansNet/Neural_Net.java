@@ -8,18 +8,28 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.io.*;
 
+
+//Neural Net Regression Analysis Using Gradient Descent
 public class Neural_Net {
 	public static final double e = 2.71828;
+   //yhat predicted output
 	private double[][] yHat;
 	private double[][] input;
 	private double[][] output;
+   //amount to adjust weight of matrix 1 for layer 1 
 	private double[][]  dJdW1;
+   //amount to adjust weight of  matrix 2 for layer 2
 	private double[][]  dJdW2;
+   //size of input(feature)  vector
 	private  int input_Size;
+   //number of hidden layers
 	private  int hidden_Layer;
 	private  int output_Size;
+   //matrix of weights for hidden layer 1
 	private double[][] W1 ;
+   //matrix of weights for hidden layer 2 
 	private double[][] W2 ;
+   //z3 a2 and z2 are matrices formed by multiplying inputs from previous layer by a weight matrix
 	private double[][] z3 ;
 	private double[][] a2 ; 
 	private double[][] z2 ;
@@ -49,8 +59,8 @@ public void train(double[][] X ,double[][] y){
 	 this.hidden_Layer = X.length;
 	 this.output_Size = y[0].length; 
 	 
-	 this.W1 = randmat(input_Size,hidden_Layer);
-	this.W2 = randmat(hidden_Layer,output_Size);
+	 this.W1 = mat.randmat(input_Size,hidden_Layer);
+	this.W2 = mat.randmat(hidden_Layer,output_Size);
 	lernen();
 	
 }
@@ -74,7 +84,7 @@ public void train(File f, int dim1,int dim2) throws FileNotFoundException{
 	int colums = dim1+dim2;
 	
 	
-		//get all the values into net 
+		//get all the values into net from text file
 Scanner ss = new Scanner(new FileReader(f));
 	double[][] firstinput = new double[rows][colums];
 	
@@ -85,7 +95,7 @@ Scanner ss = new Scanner(new FileReader(f));
 			
 			 String stuff = ss.nextLine();
 			 Scanner  fig = new Scanner(stuff);
-			 //System.out.println(i);
+			 
 			 int j = 0;
 			 while(fig.hasNextDouble()){
 				 
@@ -97,19 +107,8 @@ Scanner ss = new Scanner(new FileReader(f));
 	}	 
 		
 		
-	/*for(int i = 0;i<rows;i++){
-		for(int j = 0;j<colums;j++){
-				if(secondscan.hasNextDouble()){
-				firstinput[i][j] = secondscan.nextDouble();
-				}
-			
-		}
-	}
-	secondscan.close();*/
-	//System.out.println(Arrays.deepToString(firstinput));
 	//training and sorting part 
 	double[][] Start = new double[dim1][rows];
-	//System.out.println(Arrays.deepToString(inputStart));
 	double[][] Startout = new double[dim2][rows];
 	//remember firstinput is different
 	double[][] trans = transpose(firstinput);
@@ -132,15 +131,16 @@ Scanner ss = new Scanner(new FileReader(f));
 		scaling(input);
 		scaling(output);
 		//forms new weights
+      //iterate until weights converge (ie approximatly 1000 times) 
 		int x =0;
 		while(x<1000){
 		forward();
 		costFunction();
 		costFunctionPrime();
-		//subtract djdw from 
+		//subtract djdw from weight matrix 
 		
-		W1 = matrixSub(W1,multScal(dJdW1,1));
-		W2 = matrixSub(W2,multScal(dJdW2,1));
+		W1 = mat.matrixSub(W1,multScal(dJdW1,1));
+		W2 = mat.matrixSub(W2,multScal(dJdW2,1));
 		x++;
 		}
 		forward();
@@ -148,25 +148,25 @@ Scanner ss = new Scanner(new FileReader(f));
 		
 		
 	  }
-	
+//foward propagtes an input through the neural net
 public double[][] forward(){
 		//propagates inputs through network
 		//z_2 = xW
-	z2 = matrixMult(input,W1);
+	z2 = mat.matrixMult(input,W1);
 	 //a2 = f(z_3)
-	 a2 = matrixSigmoid(z2);
+	 a2 = mat.matrixSigmoid(z2);
 	 //z3 = a_2 * W_2
-	 z3 = matrixMult(a2,W2);
+	 z3 = mat.matrixMult(a2,W2);
 	 //this is somehow wrong
 	 //yHat is supposed to be 3 by 1 matrix 
-	  this.yHat = matrixSigmoid(z3);
+	  this.yHat = mat.matrixSigmoid(z3);
 	 
-		//this is our prediction	 
+		//yHat is predicted value 
 		return yHat;
 		
 	}
 
-//this is the activation function
+//apply activation function to an input z 
  public static double sigmoid(double z){
 		
 		return 1/(1+Math.pow(2.718, -z));
@@ -176,16 +176,18 @@ public double[][] forward(){
  //this is just like forrward just it does not modify network so it is for testing
  public double[][] prediction(double[][] prein){
 	 //this is repetitive how can we change this
-	double[][] z1 = matrixMult(prein,W1);
-	z2 = matrixSigmoid(z1);
-	 z3 = matrixMult(z2,W2);
-	 double[][] prediction= matrixSigmoid(z3); 
+	double[][] z1 = mat.matrixMult(prein,W1);
+   //apply sigmoid activation function
+	z2 = mat.matrixSigmoid(z1);
+   //generate output matrix for next layer
+	 z3 = mat.matrixMult(z2,W2);
+	 double[][] prediction= mat.matrixSigmoid(z3); 
 	 System.out.println(Arrays.deepToString(prediction));
 		return prediction;
 	
 	 
  }
-	
+	//applies simoid activation method to whole matrix
 	public static double[][] matrixSigmoid(double[][] unact){
 		double[][] modified = new double[unact.length][unact.length];
 		for(int i= 0;i<unact.length;i++){
@@ -198,7 +200,7 @@ public double[][] forward(){
 		
 	}
 	
-	//generates random matrix that will be replaced when we start learning
+	//generates random matrix that will be replaced when alg starts learning
 	public static double[][]  randmat(int arg,int arg2){
 		double[][] randn = new double[arg][arg2];
 	    for(int i=0;i<arg;i++){
@@ -243,17 +245,16 @@ public double[][] forward(){
 	 }
 	//this uses the error to adjust the weight matrix using gradient descent
 	public void costFunctionPrime(){
-		//multiply all the derivative together in a chain rule
-		//how does this have to do with using all the training set? /sumiing
-	double[][]  delta3 = handamard(multScal((matrixSub(output,yHat)),-1),matrixSigmoidPrime(z3));
+		//multiply all the derivative together in a chain rule for backpropagatin 
+	double[][]  delta3 = ,mat.handamard(multScal((matrixSub(output,yHat)),-1),matrixSigmoidPrime(z3));
 	//adjust all weights at once
- dJdW2 = matrixMult(transpose(a2), delta3);
+ dJdW2 = mat.matrixMult(transpose(a2), delta3);
 	
 	double[][] delta2 = handamard(matrixMult(delta3 , transpose(W2)),matrixSigmoidPrime(z2));
-	dJdW1 =  matrixMult(transpose(input), delta2);
+	dJdW1 = mat.matrixMult(transpose(input), delta2);
 	}
-	//this cost function measures the accuracy of our prediction 
-	//this could be either static or non static depending on if you want a general cost function or
+	//this cost function measures the accuracy of our prediction ie yHat
+   //to Output
 	public double  costFunction(){
 		
 		double cost = 0;
@@ -277,7 +278,7 @@ public static  double[][] matrixSub(double[][] first, double[][] second){
 		return solution;
 	}
 	
-	//transposes 
+	//transposes a give matrix untrans
 	public static double[][] transpose(double[][] untrans){
 		double[][] temp = new double[untrans[0].length][untrans.length];
 		for(int i = 0;i< untrans.length;i++){
@@ -287,8 +288,7 @@ public static  double[][] matrixSub(double[][] first, double[][] second){
 		}
 		untrans = temp;
 		return untrans;
-		//is this good form 
-	}
+			}
 	//multiplies a matrix by a scalar
 	public  static double[][] multScal(double[][] inin, double scalar){
 		for(int i = 0;i<inin.length;i++){
@@ -324,7 +324,6 @@ public static  double[][] matrixSub(double[][] first, double[][] second){
 	public static double[][] handamard(double[][] first, double[][] second){
 		if(first.length != second.length){
 			System.out.println("This will not work");
-			//break;
 		}
 		double[][] returned = new double[first.length][first[0].length];
 		for(int i = 0;i<first.length;i++){
