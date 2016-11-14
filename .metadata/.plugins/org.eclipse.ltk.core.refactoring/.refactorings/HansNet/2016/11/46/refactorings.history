@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;HansNet.MatrixClass.java&apos; to &apos;Mat.java&apos;&#x0D;&#x0A;- Original project: &apos;HansNet&apos;&#x0D;&#x0A;- Original element: &apos;HansNet.MatrixClass.java&apos;&#x0D;&#x0A;- Renamed element: &apos;HansNet.Mat.java&apos;" description="Rename compilation unit &apos;MatrixClass.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;HansNet{MatrixClass.java" name="Mat.java" references="false" stamp="1478757735861" version="1.0"/>
+</session>

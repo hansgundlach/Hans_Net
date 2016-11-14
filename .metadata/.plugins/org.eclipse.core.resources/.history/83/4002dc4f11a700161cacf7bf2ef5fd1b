@@ -48,16 +48,13 @@ public class Neural_Net {
 			firstnet.train(neuralFile,2,1);
 						firstnet.prediction(inputData);
 	}
-	//neural net class 
+	
 	public Neural_Net(){
 		}
 //second constructor for files
-	
-//trains based on input matrix X and output matrix Y 
 public void train(double[][] X ,double[][] y){
 	 this.input = X;
 	 this.output = y;
-	 //layer settings
 	 this.input_Size = X[0].length;
 	 this.hidden_Layer = X.length;
 	 this.output_Size = y[0].length; 
@@ -68,9 +65,6 @@ public void train(double[][] X ,double[][] y){
 	
 }
 
-
-//train trains neural network based on a file f with input and output matrices
-//the input matrix has dim 1 columns the output matrix has dim 2 column s
 public void train(File f, int dim1,int dim2) throws FileNotFoundException{
 	//File newinputFile = new File("C:/Users/hansg17/workspace/newJAVart/src/newJAVart/Neural_NetInput.txt");
 	
@@ -90,7 +84,7 @@ public void train(File f, int dim1,int dim2) throws FileNotFoundException{
 	int colums = dim1+dim2;
 	
 	
-		//scanner reads file with input and output matrices
+		//get all the values into net from text file
 Scanner ss = new Scanner(new FileReader(f));
 	double[][] firstinput = new double[rows][colums];
 	
@@ -128,18 +122,17 @@ Scanner ss = new Scanner(new FileReader(f));
 		Startout[jj] = trans[dim1+jj];
 	}
 	System.out.println(Arrays.deepToString(Startout));
+	//System.out.println(inputStart);
 	train(transpose(Start),transpose(Startout));
 	
 }
-	// lernen() combines all the methods to do full gradient descent
-// and adjust weight matrices
+	//combines all the methods to do full gradient descent
 	public void lernen(){
 		scaling(input);
 		scaling(output);
 		//forms new weights
       //iterate until weights converge (ie approximatly 1000 times) 
 		int x =0;
-		//insert iteration condition base on your preference
 		while(x<1000){
 		forward();
 		costFunction();
@@ -173,7 +166,13 @@ public double[][] forward(){
 		
 	}
 
+//apply activation function to an input z 
+ public static double sigmoid(double z){
+		
+		return 1/(1+Math.pow(2.718, -z));
 
+ }
+ 
  //this is just like forrward just it does not modify network so it is for testing
  public double[][] prediction(double[][] prein){
 	 //this is repetitive how can we change this
@@ -188,12 +187,22 @@ public double[][] forward(){
 	
 	 
  }
+	//applies simoid activation method to whole matrix
+	public static double[][] matrixSigmoid(double[][] unact){
+		double[][] modified = new double[unact.length][unact.length];
+		for(int i= 0;i<unact.length;i++){
+			for(int j=0;j<unact[0].length;j++){
+				modified[i][j] = sigmoid(unact[i][j]);
+			}
+		}
+		return modified;
+		
+		
+	}
 	
 	
 	//this scales  the vectors so their can be proper comparison
- // for neural network training
 	public static void scaling(double[][] prescal){
-		//find maximum  value in array and divide all array entries by maxalue
 		double maxvalue = 0;
 		
 		for(int i=0;i<prescal.length;i++){
@@ -214,11 +223,11 @@ public double[][] forward(){
 	//this uses the error to adjust the weight matrix using gradient descent
 	public void costFunctionPrime(){
 		//multiply all the derivative together in a chain rule for backpropagatin 
-	double[][]  delta3 = Mat.handamard(multScal((Mat.matrixSub(output,yHat)),-1),Mat.matrixSigmoidPrime(z3));
+	double[][]  delta3 = Mat.handamard(multScal((matrixSub(output,yHat)),-1),matrixSigmoidPrime(z3));
 	//adjust all weights at once
  dJdW2 = Mat.matrixMult(transpose(a2), delta3);
 	
-	double[][] delta2 = Mat.handamard(Mat.matrixMult(delta3 , transpose(W2)),Mat.matrixSigmoidPrime(z2));
+	double[][] delta2 = Mat.handamard(matrixMult(delta3 , transpose(W2)),matrixSigmoidPrime(z2));
 	dJdW1 = Mat.matrixMult(transpose(input), delta2);
 	}
 	//this cost function measures the accuracy of our prediction ie yHat
@@ -235,7 +244,16 @@ public double[][] forward(){
 		return cost;
 	}
 	
-
+	//subtracts the second matrix from the first matrix
+public static  double[][] matrixSub(double[][] first, double[][] second){
+		double[][] solution = new double[first.length][first[0].length];
+		for( int i = 0;i<first.length;i++){
+			for( int j=0;j<first[0].length;j++){
+				solution[i][j] = first[i][j] - second[i][j];
+			}
+		}
+		return solution;
+	}
 	
 	//transposes a give matrix untrans
 	public static double[][] transpose(double[][] untrans){

@@ -221,7 +221,16 @@ public double[][] forward(){
 		
 	}
 	
-	
+	//generates random matrix that will be replaced when we start learning
+	public static double[][]  randmat(int arg,int arg2){
+		double[][] randn = new double[arg][arg2];
+	    for(int i=0;i<arg;i++){
+	    	for(int j=0;j<arg2;j++){
+	    	randn[i][j] = Math.random();
+	    }
+	    }
+	    return randn;
+	}
 	//this scales  the vectors so their can be proper comparison
 	public static void scaling(double[][] prescal){
 		double maxvalue = 0;

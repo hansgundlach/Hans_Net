@@ -1,18 +1,20 @@
-public class Matrix {
+package HansNet;
+public class Mat {
+	public static final double e = 2.71828;
 
    private int rows;
    private int columns;
    private double[][] elements;
    
    //creates a matrix of zeros
-   public Matrix(int rows, int columns) {
+   public Mat(int rows, int columns) {
       this.rows = rows;
       this.columns = columns;
       this.elements = new double[rows][columns];  
    }
    
    // create matrix based on 2d array
-   public Matrix(double[][] data) {
+   public Mat(double[][] data) {
       rows = data.length;
       columns = data[0].length;
       this.elements = new double[rows][columns];
@@ -21,8 +23,8 @@ public class Matrix {
             this.elements[i][j] = data[i][j];
    }
    
-   public Matrix clone(Matrix B) {
-      return new Matrix(this.elements);
+   public Mat clone(Mat B) {
+      return new Mat(this.elements);
    }
    
    public int getColumns() {
@@ -38,11 +40,81 @@ public class Matrix {
       return this.elements;  
    }
    
-   //TODO
-   //method to get specific elements of a matrix
+   
+	//this is the derivative of the sigmoid activation function used in backpropogation
+	public static double sigmoidPrime(double pre){
+	   return Math.pow(e, - pre)/(Math.pow(1 + Math.pow(e,-pre),2));
+	}
+	//applies sigmoid function to a whole matrix
+	 public static double[][] matrixSigmoidPrime(double[][] pre){
+		 double[][] returned = new double[pre.length][pre[0].length];
+		 for(int i = 0;i<pre.length;i++){
+			 for(int j = 0;j<pre[0].length;j++){
+				 returned[i][j] = sigmoidPrime(pre[i][j]);
+				 
+			 }
+		 }
+		 return returned;
+	 }
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+	//multiplies a matrix by a matrix
+	public static double[][] matrixMult(double[][] arg,double[][] arg2){
+		double sum = 0;
+		
+			double[][] multiplied_matrix = new double[arg.length][arg2[0].length];
+			//iterating over all rows
+			for(int i=0;i<arg.length;i++){
+				//iterating over all columns in second matrix
+				for(int j= 0;j<arg2[0].length;j++){
+					//iterating over columns in arg1 
+					for(int k=0;k<arg[0].length;k++){
+					
+						multiplied_matrix[i][j] += arg[i][k]*arg2[k][j];
+					}
+					
+				}
+				
+			}
+			 
+			
+			return multiplied_matrix;
+		}
+   
+   
+    
+ //performs handamard matrix multiplication this is component by component multiplication
+ 	public static double[][] handamard(double[][] first, double[][] second){
+ 		if(first.length != second.length){
+ 			System.out.println("This will not work");
+ 		}
+ 		double[][] returned = new double[first.length][first[0].length];
+ 		for(int i = 0;i<first.length;i++){
+ 			for(int j = 0;j<first[0].length;j++){
+ 				returned[i][j] = first[i][j] * second[i][j];
+ 			}
+ 		}
+ 		return returned;
+ 	}
+   
    
    //changes the value of this matrix to the dot product of itself and another matrix
-   public void dot(Matrix B){
+   public void dot(Mat B){
       double[][] BElements = B.getElements();
     	//iterating over all rows
       for(int i = 0; i < this.rows; i++){
@@ -57,18 +129,18 @@ public class Matrix {
    }
    
    //cacluates the transpose for a matrix does not actually alter this matrix, just generates the transpose
-   public Matrix T(){
+   public Mat T(){
       double[][] transpose = new double[this.rows][this.columns];
       for(int i = 0; i < this.rows; i++){
          for(int j = 0; j < this.columns; j++){
             transpose[j][i] = this.elements[i][j];
          }
       }
-      return new Matrix(transpose);
+      return new Mat(transpose);
    }
    
    //subtracts the second matrix from the first matrix
-   public void minus(Matrix B){
+   public void minus(Mat B){
       if(B.getRows() != this.rows || B.getColumns() != this.columns) {
          throw new IllegalArgumentException("Matrix for subtraction has incorrect size");
       }
