@@ -1,7 +1,8 @@
 package HansNet;
 public class Mat {
 	public static final double e = 2.71828;
-	private int rows;
+
+   private int rows;
    private int columns;
    private double[][] elements;
    
@@ -102,6 +103,7 @@ public static  double[][] matrixSub(double[][] first, double[][] second){
 		}
    
    
+    
  //performs handamard matrix multiplication this is component by component multiplication
  	public static double[][] handamard(double[][] first, double[][] second){
  		if(first.length != second.length){
@@ -117,7 +119,7 @@ public static  double[][] matrixSub(double[][] first, double[][] second){
  	}
    
    
- //multiply a matrix by a scalar 
+  
 public void multiply(double scalar){
       for(int i = 0; i < this.rows;i++){
          for(int j = 0; j < this.columns; j++){

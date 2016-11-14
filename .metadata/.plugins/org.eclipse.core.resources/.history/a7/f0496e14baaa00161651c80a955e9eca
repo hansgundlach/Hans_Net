@@ -1,7 +1,8 @@
 package HansNet;
 public class Mat {
 	public static final double e = 2.71828;
-	private int rows;
+
+   private int rows;
    private int columns;
    private double[][] elements;
    

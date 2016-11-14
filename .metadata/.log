@@ -588,3 +588,6 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.ui 4 4 2016-11-13 09:27:48.620
 !MESSAGE Conflicting handlers for it.baeyens.arduino.actions.ArduinoBuildAction: {it.baeyens.arduino.actions.BuildHandler} vs {it.baeyens.arduino.actions.BuildHandler}
+
+!ENTRY org.eclipse.ui 4 4 2016-11-14 14:31:10.174
+!MESSAGE Conflicting handlers for it.baeyens.arduino.actions.ArduinoBuildAction: {it.baeyens.arduino.actions.BuildHandler} vs {it.baeyens.arduino.actions.BuildHandler}

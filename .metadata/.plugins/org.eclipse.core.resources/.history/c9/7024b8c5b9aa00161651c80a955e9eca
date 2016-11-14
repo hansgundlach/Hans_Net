@@ -1,7 +1,8 @@
 package HansNet;
 public class Mat {
 	public static final double e = 2.71828;
-	private int rows;
+
+   private int rows;
    private int columns;
    private double[][] elements;
    
@@ -102,6 +103,7 @@ public static  double[][] matrixSub(double[][] first, double[][] second){
 		}
    
    
+    
  //performs handamard matrix multiplication this is component by component multiplication
  	public static double[][] handamard(double[][] first, double[][] second){
  		if(first.length != second.length){
@@ -117,8 +119,46 @@ public static  double[][] matrixSub(double[][] first, double[][] second){
  	}
    
    
- //multiply a matrix by a scalar 
-public void multiply(double scalar){
+   //changes the value of this matrix to the dot product of itself and another matrix
+   public void dot(Mat B){
+      double[][] BElements = B.getElements();
+    	//iterating over all rows
+      for(int i = 0; i < this.rows; i++){
+      	//iterating over all columns in second matrix
+         for(int j = 0; j < B.getColumns(); j++){
+         	//iterating over columns in arg1 
+            for(int k = 0; k < this.columns; k++){
+               this.elements[i][j] = this.elements[i][k]*BElements[k][j];
+            }
+         }
+      }
+   }
+   
+   //cacluates the transpose for a matrix does not actually alter this matrix, just generates the transpose
+   public Mat T(){
+      double[][] transpose = new double[this.rows][this.columns];
+      for(int i = 0; i < this.rows; i++){
+         for(int j = 0; j < this.columns; j++){
+            transpose[j][i] = this.elements[i][j];
+         }
+      }
+      return new Mat(transpose);
+   }
+   
+   //subtracts the second matrix from the first matrix
+   public void minus(Mat B){
+      if(B.getRows() != this.rows || B.getColumns() != this.columns) {
+         throw new IllegalArgumentException("Matrix for subtraction has incorrect size");
+      }
+      double[][] BElements = B.getElements();
+      for( int i = 0; i < this.rows; i++){
+         for( int j = 0; j < this.columns;j++){
+            this.elements[i][j] = this.elements[i][j] - BElements[i][j];
+         }
+      }
+   }
+   
+   public void multiply(double scalar){
       for(int i = 0; i < this.rows;i++){
          for(int j = 0; j < this.columns; j++){
             this.elements[i][j] = this.elements[i][j]*scalar;
