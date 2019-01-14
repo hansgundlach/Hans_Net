@@ -1,4 +1,4 @@
-# Java_Neural_Net
+# Hans_Net
 HansNet is an implementation of a Basic Neural Network in Java.
 HansNet is designed for basic multi-dimensional regression.
 Currently HansNet does not implement any regularization functions.
